@@ -10,7 +10,7 @@ bot_token = os.getenv('bot_token')
 controlid_ip = os.getenv('controlid_ip')
 dest = os.getenv('dest')
 password = os.getenv('controlid_password')
-webhook_host = os.getenv('webhook_host', '0.0.0.0'
+webhook_host = os.getenv('webhook_host', '0.0.0.0')
 webhook_port = os.getenv('webhook_port', 5432)
 
 app = flask.Flask(__name__)
