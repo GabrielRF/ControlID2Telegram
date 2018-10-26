@@ -1,4 +1,3 @@
-import datetime
 import flask
 import json
 import os
@@ -30,9 +29,8 @@ def set_monitor():
     session = json.loads(response.text)['session']
 
     url = "http://" + controlid_ip + "/set_configuration.fcgi?session=" + session
-    print(url)
-    payload = ("{\n\t\n\t\"monitor\":" +
-               "{\n\t\n\t\"request_timeout\":\"500\"," +
+    payload = ("{\n\t\"monitor\":" +
+               "{\n\t\"request_timeout\":\"500\"," +
                "\n\t\"hostname\":\"" + host_ip + "\"," +
                "\n\t\"port\":\"" + webhook_port + "\"," +
                "\n\t\"path\":\"api/notification\"\n}\n}")
@@ -96,8 +94,6 @@ def get_event(eventnum):
 @app.route('/api/notification/dao', methods=['POST'])
 def index():
     jsonData = request.get_json()
-    # deviceid = jsonData['object_changes'][0]['values']['device_id']
-    # print(deviceid)
     userid = jsonData['object_changes'][0]['values']['user_id']
     eventnum = jsonData['object_changes'][0]['values']['event']
 
