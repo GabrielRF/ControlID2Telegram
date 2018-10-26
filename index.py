@@ -21,7 +21,7 @@ bot = telebot.TeleBot(bot_token)
 def set_monitor():
     url = "http://" + controlid_ip + "/login.fcgi"
 
-    payload = '{\n\t\n\t\"login\":\"admin\",\n\t\"password\":\"'+password+'\"\n\t\n}'
+    payload = '{\n\t\n\t\"login\":\"admin\",\n\t\"password\":\"'+str(password)+'\"\n\t\n}'
     headers = {
         'content-type': "application/json"
         }

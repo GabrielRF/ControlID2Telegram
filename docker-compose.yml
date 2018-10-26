@@ -11,4 +11,6 @@ controlid2telegram:
         - WEBHOOK_HOST=0.0.0.0
         - WEBHOOK_PORT=5432
         - MESSAGE_DESTINATION=
+    ports:
+        - 5432:5432
     restart: always
