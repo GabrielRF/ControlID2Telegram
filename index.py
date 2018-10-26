@@ -11,7 +11,7 @@ bot_token = os.getenv('BOT_TOKEN')
 controlid_ip = os.getenv('CONTROLID_IP')
 host_ip = os.getenv('HOST_IP')
 dest = os.getenv('MESSAGE_DESTINATION')
-password = os.getenv('CONTROLID_PASSWORK')
+password = os.getenv('CONTROLID_PASSWORD')
 webhook_host = os.getenv('WEBHOOK_HOST', '0.0.0.0')
 webhook_port = os.getenv('WEBHOOK_PORT', 5432)
 
