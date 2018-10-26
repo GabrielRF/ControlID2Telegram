@@ -1,0 +1,13 @@
+controlid2telegram:
+    image: gabrielrf/controlid2telegram
+    environment:
+        - BOT_TOKEN=
+        - ALERTS=1,2,3,4,5,6,7,8,9,10,11,12,13
+        - CONTROLID_IP=
+        - HOST_IP=
+        - CONTROLID_USER=
+        - CONTROLID_PASSWORD=
+        - WEBHOOK_HOST=0.0.0.0
+        - WEBHOOK_PORT=5432
+        - MESSAGE_DESTINATION=
+    restart: always

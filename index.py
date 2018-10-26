@@ -6,12 +6,12 @@ import telebot
 from flask import request
 
 alerts = os.getenv('ALERTS', '1,2,3,4,5,6,7,8,9,10,11,12,13')
-bot_token = os.getenv('bot_token')
-controlid_ip = os.getenv('controlid_ip')
-dest = os.getenv('dest')
-password = os.getenv('controlid_password')
-webhook_host = os.getenv('webhook_host', '0.0.0.0')
-webhook_port = os.getenv('webhook_port', 5432)
+bot_token = os.getenv('BOT_TOKEN')
+controlid_ip = os.getenv('CONTROLID_IP')
+dest = os.getenv('MESSAGE_DESTINATION')
+password = os.getenv('CONTROLID_PASSWORK')
+webhook_host = os.getenv('WEBHOOK_HOST', '0.0.0.0')
+webhook_port = os.getenv('WEBHOOK_PORT', 5432)
 
 app = flask.Flask(__name__)
 bot = telebot.TeleBot(bot_token)

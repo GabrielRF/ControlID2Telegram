@@ -1,10 +1,10 @@
 import requests
 import json
 
-controlid_ip = os.getenv('controlid_ip')
-password = os.getenv('controlid_password')
-dockerhip = os.getenv('dockerhip')
-dockerport = os.getenv('dockerport')
+controlid_ip = os.getenv('CONTROLID_IP')
+password = os.getenv('CONTROLID_PASSWORD')
+dockerhip = os.getenv('HOST_IP')
+dockerport = os.getenv('WEBHOOK_PORT')
 
 url = "http://" + controlid_ip + "/login.fcgi"
 
