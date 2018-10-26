@@ -9,6 +9,7 @@ from flask import request
 alerts = os.getenv('ALERTS', '1,2,3,4,5,6,7,8,9,10,11,12,13')
 bot_token = os.getenv('BOT_TOKEN')
 controlid_ip = os.getenv('CONTROLID_IP')
+host_ip = os.getenv('HOST_IP')
 dest = os.getenv('MESSAGE_DESTINATION')
 password = os.getenv('CONTROLID_PASSWORK')
 webhook_host = os.getenv('WEBHOOK_HOST', '0.0.0.0')
@@ -16,6 +17,32 @@ webhook_port = os.getenv('WEBHOOK_PORT', 5432)
 
 app = flask.Flask(__name__)
 bot = telebot.TeleBot(bot_token)
+
+def set_monitor():
+    url = "http://" + controlid_ip + "/login.fcgi"
+
+    payload = '{\n\t\n\t\"login\":\"admin\",\n\t\"password\":\"'+password+'\"\n\t\n}'
+    headers = {
+        'content-type': "application/json"
+        }
+
+    response = requests.request("POST", url, data=payload, headers=headers)
+    session = json.loads(response.text)['session']
+
+    url = "http://" + controlid_ip + "/set_configuration.fcgi?session=" + session
+    print(url)
+    payload = ("{\n\t\n\t\"monitor\":" +
+               "{\n\t\n\t\"request_timeout\":\"500\"," +
+               "\n\t\"hostname\":\"" + host_ip + "\"," +
+               "\n\t\"port\":\"" + webhook_port + "\"," +
+               "\n\t\"path\":\"api/notification\"\n}\n}")
+    print(payload)
+    headers = {
+        'content-type': "application/json"
+        }
+
+    response = requests.request("POST", url, data=payload, headers=headers)
+    print(str(response))
 
 def login(controlid_ip, password):
     url = 'http://' + controlid_ip + '/login.fcgi'
@@ -87,5 +114,6 @@ def index():
 
 if __name__ == '__main__':
     # app.debug = True
+    set_monitor()
     app.run(host=webhook_host, port=webhook_port)
 
