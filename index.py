@@ -88,6 +88,8 @@ def get_event(eventnum):
         11: str('\U0001F518') + 'Acesso através de botoeira',
         12: str('\U0001F310') + 'Acesso através de interface web',
         13: 'Desistência de entrada',
+        200: 'Equipamento ligado',
+        
     }
     return cases.get(int(eventnum))
 
@@ -108,8 +110,28 @@ def index():
     sendmsg(bot, dest, userid, username, event)
     return('')
 
+@app.route('/api/notification/operation_mode', methods=['POST'])
+def op_mode():
+    jsonData = request.get_json()
+    mode = jsonData['operation_mode']['mode']
+    mode_name = jsonData['operation_mode']['mode_name']
+    print(str(mode) + '\t' + mode_name)
+    event = get_event(200)
+    sendmsg(bot, dest, '', '', event)
+    return('')
+
+
+@app.route('/api/notification/secbox', methods=['POST'])
+def secbox():
+    jsonData = request.get_json()
+    id = jsonData['secbox']['id']
+    open = jsonData['secbox']['open']
+    print(str(id) + '\t' + str(open))
+    return('')
+
 if __name__ == '__main__':
     # app.debug = True
     set_monitor()
     app.run(host=webhook_host, port=webhook_port)
+
 
