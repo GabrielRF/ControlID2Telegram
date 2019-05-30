@@ -115,7 +115,8 @@ def op_mode():
     jsonData = request.get_json()
     mode = jsonData['operation_mode']['mode']
     mode_name = jsonData['operation_mode']['mode_name']
-    print(str(mode) + '\t' + mode_name)
+    last_offline = jsonData['operation_mode']['last_offline']
+    print(str(mode) + '\t' + mode_name + '\t' + str(last_offline))
     event = get_event(200)
     sendmsg(bot, dest, '', '', event)
     return('')
