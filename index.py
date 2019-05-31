@@ -117,8 +117,9 @@ def op_mode():
     mode_name = jsonData['operation_mode']['mode_name']
     last_offline = jsonData['operation_mode']['last_offline']
     print(str(mode) + '\t' + mode_name + '\t' + str(last_offline))
-    event = get_event(200)
-    sendmsg(bot, dest, '', '', event)
+    if last_offline == 0:
+        event = get_event(200)
+        sendmsg(bot, dest, '', '', event)
     return('')
 
 
