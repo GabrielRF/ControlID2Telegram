@@ -10,7 +10,8 @@ bot_token = os.getenv('BOT_TOKEN')
 controlid_ip = os.getenv('CONTROLID_IP')
 host_ip = os.getenv('HOST_IP')
 dest = os.getenv('MESSAGE_DESTINATION')
-password = os.getenv('CONTROLID_PASSWORD')
+cid_webuser = os.getenv('CONTROLID_USER', default='admin')
+cid_webpassword = os.getenv('CONTROLID_PASSWORD', default='admin')
 webhook_host = os.getenv('WEBHOOK_HOST', '0.0.0.0')
 webhook_port = os.getenv('WEBHOOK_PORT', 5432)
 
@@ -20,7 +21,11 @@ bot = telebot.TeleBot(bot_token)
 def set_monitor():
     url = "http://" + controlid_ip + "/login.fcgi"
 
-    payload = '{\n\t\n\t\"login\":\"admin\",\n\t\"password\":\"'+str(password)+'\"\n\t\n}'
+    payload_dict = {}
+    payload_dict['login'] = str(cid_webuser)
+    payload_dict['password'] = str(cid_webpassword)
+    payload=json.dumps(payload_dict)
+
     headers = {
         'content-type': "application/json"
         }
@@ -29,11 +34,14 @@ def set_monitor():
     session = json.loads(response.text)['session']
 
     url = "http://" + controlid_ip + "/set_configuration.fcgi?session=" + session
-    payload = ("{\n\t\"monitor\":" +
-               "{\n\t\"request_timeout\":\"500\"," +
-               "\n\t\"hostname\":\"" + host_ip + "\"," +
-               "\n\t\"port\":\"" + webhook_port + "\"," +
-               "\n\t\"path\":\"api/notification\"\n}\n}")
+    payload_dict = {'monitor': {
+                'request_timeout': str(500),
+                'hostname': str(host_ip),
+                'port': str(webhook_port),
+                'path': 'api/notification'
+                }
+            }
+    payload = json.dumps(payload_dict, indent=4)
     print(payload)
     headers = {
         'content-type': "application/json"
@@ -44,7 +52,8 @@ def set_monitor():
 
 def login(controlid_ip, password):
     url = 'http://' + controlid_ip + '/login.fcgi'
-    payload = '{\n\t\n\t\"login\":\"admin\",\n\t\"password\":\"'+password+'\"\n\t\n}'
+    payload_dict = {'login': cid_webuser, 'password': cid_webpassword}
+    payload = json.dumps(payload_dict)
     headers = {
         'content-type': "application/json"
     }
@@ -55,11 +64,15 @@ def login(controlid_ip, password):
 
 def get_username(controlid_ip, session, userid):
     url = 'http://' + controlid_ip + '/load_objects.fcgi?session=' + session
-    payload = ("{\n\t\"object\":\"users\"," +
-           "\n\t\n\t\"where\":{" +
-           "\n\t\t\"users\":{" +
-           "\n\t\t\t\"id\":" + userid +
-           "\n\t\t}\n\t}\n}")
+    payload_dict = {
+            'object': 'users',
+            'where': {
+                'users': {
+                    'id': int(userid)
+                    }
+                }
+            }
+    payload = json.dumps(payload_dict, indent=4)
     headers = {
         'content-type': 'application/json'
     }
@@ -101,7 +114,7 @@ def index():
 
     if eventnum not in alerts:
         return('')
-    session = login(controlid_ip, password)
+    session = login(controlid_ip, cid_webpassword)
     try:
         username = get_username(controlid_ip, session, userid)
     except:
